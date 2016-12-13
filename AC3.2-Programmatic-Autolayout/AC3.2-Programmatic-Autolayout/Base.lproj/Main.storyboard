@@ -21,8 +21,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qma-RY-A3r">
+                                <rect key="frame" x="35" y="171" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.42745098040000001" green="0.77394291189999997" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.42745098040000001" green="0.78039215689999997" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zTd-g8-nFa">
+                                <rect key="frame" x="119" y="319" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lp6-QB-jzg">
-                                <rect key="frame" x="100" y="20" width="259" height="67"/>
+                                <rect key="frame" x="58" y="57" width="259" height="67"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.33725490200000002" green="0.4823529412" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -31,11 +42,13 @@
                     </view>
                     <connections>
                         <outlet property="blueView" destination="Lp6-QB-jzg" id="Bph-Vn-46W"/>
+                        <outlet property="greenView" destination="qma-RY-A3r" id="jvs-n1-61q"/>
+                        <outlet property="pinkView" destination="zTd-g8-nFa" id="FeL-ju-ulr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="24.800000000000001" y="36.431784107946029"/>
+            <point key="canvasLocation" x="-551" y="-251"/>
         </scene>
     </scenes>
 </document>
