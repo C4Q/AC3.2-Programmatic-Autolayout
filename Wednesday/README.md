@@ -4,7 +4,7 @@
 ![1](../Images/day2_example1.png)
 
 ### 2. 
-![2](../Image/day2_example2.png)
+![2](../Images/day2_example2.png)
 
 ### 3. 
 ![3](../Images/day2_example3.png)
