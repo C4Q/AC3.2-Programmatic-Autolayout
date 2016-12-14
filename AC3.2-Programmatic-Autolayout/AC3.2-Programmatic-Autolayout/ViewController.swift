@@ -16,6 +16,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    twoVerticalsAndATrailingGreenWith200Height()
   }
   
   internal func twoVerticalsAndATrailingGreenWith200Height() {
@@ -36,6 +37,7 @@ class ViewController: UIViewController {
     pinkView.leadingAnchor.constraint(equalTo: blueView.leadingAnchor).isActive = true
     pinkView.trailingAnchor.constraint(equalTo: blueView.trailingAnchor).isActive = true
     
+
     // green leading == blue trailing
     // green trailing == view trailing
     // green top == blue top
@@ -43,8 +45,16 @@ class ViewController: UIViewController {
     greenView.topAnchor.constraint(equalTo: blueView.topAnchor).isActive = true
     greenView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
     greenView.leadingAnchor.constraint(equalTo: blueView.trailingAnchor).isActive = true
-    greenView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+    greenView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 200.0).isActive = true
     
+    let label = UILabel()
+    label.text = "Hello, World"
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    greenView.addSubview(label)
+    label.centerXAnchor.constraint(equalTo: greenView.centerXAnchor).isActive = true
+    label.centerYAnchor.constraint(equalTo: greenView.centerYAnchor).isActive = true
+
   }
   
   internal func threeVerticallyAlignedViews() {
@@ -179,7 +189,7 @@ class ViewController: UIViewController {
   internal func centerViewWithVFL() {
     // visual format language
     let blueWidth = "H:[view]-(<=0.0)-[tobias(200.0)]"
-    let blueHight = "V:[]-(<=0.0)-[tobias(200.0)]"
+    let blueHight = "V:[view]-(<=0.0)-[tobias(200.0)]"
     let views = ["tobias" : blueView,
                  "view" : self.view]
     
@@ -191,67 +201,6 @@ class ViewController: UIViewController {
     NSLayoutConstraint.activate( blueHeightConstraints)
     NSLayoutConstraint.activate(blueWidthConstraints)
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  /*
-   internal func usingNSLayout() {
-   let leftPinkConstraint = NSLayoutConstraint(item: pinkView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1.0, constant: 8.0)
-   let topPinkConstraint = NSLayoutConstraint(item: pinkView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: 8.0)
-   let widthPinkConstraint = NSLayoutConstraint(item: pinkView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100.0)
-   let heightPinkConstraint = NSLayoutConstraint(item: pinkView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
-   
-   pinkView.translatesAutoresizingMaskIntoConstraints = false
-   self.view.addConstraints([leftPinkConstraint, topPinkConstraint])
-   self.pinkView.addConstraints([widthPinkConstraint, heightPinkConstraint])
-   
-   let leftGreenConstraint = NSLayoutConstraint(item: greenView, attribute: .leading, relatedBy: .equal, toItem: pinkView, attribute: .trailing, multiplier: 1.0, constant: 16.0)
-   let rightGreenConstraint = NSLayoutConstraint(item: greenView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1.0, constant: -8.0)
-   let topGreenConstraint = NSLayoutConstraint(item: greenView, attribute: .top, relatedBy: .equal, toItem: pinkView, attribute: .top, multiplier: 1.0, constant: 0.0)
-   let bottomGreenConstraint = NSLayoutConstraint(item: greenView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: -16.0)
-   
-   greenView.translatesAutoresizingMaskIntoConstraints = false
-   self.view.addConstraints([leftGreenConstraint, rightGreenConstraint, bottomGreenConstraint, topGreenConstraint])
-   }
-   internal func usingVFL() {
-   let metrics = [ "border" : 16, "hugeMargin" : 50 ]
-   let views = [ "green" :  greenView, "pink" : pinkView]
-   let horizontalLayout = "H:[green(50.0)]-|"
-   let verticalLayout = "V:|-(hugeMargin)-[green]-(border)-|"
-   
-   let greenHorizontal = NSLayoutConstraint.constraints(withVisualFormat: horizontalLayout, options: [], metrics: metrics, views: views)
-   let greenVertical = NSLayoutConstraint.constraints(withVisualFormat: verticalLayout, options: [], metrics: metrics, views: views)
-   
-   greenView.translatesAutoresizingMaskIntoConstraints = false
-   NSLayoutConstraint.activate(greenHorizontal)
-   NSLayoutConstraint.activate(greenVertical)
-   }
-   */
   
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
