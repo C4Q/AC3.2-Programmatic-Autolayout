@@ -13,12 +13,163 @@ class ViewController: UIViewController {
   @IBOutlet weak var blueView: UIView!
   @IBOutlet weak var pinkView: UIView!
   @IBOutlet weak var greenView: UIView!
+  @IBOutlet weak var redView: UIView!
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    twoVerticalsAndATrailingGreenWith200Height()
+    blueView.isHidden = true
+    pinkView.isHidden = true
+    redView.isHidden = true
+    greenView.isHidden = true
+    
+    blueView.translatesAutoresizingMaskIntoConstraints = false
+    pinkView.translatesAutoresizingMaskIntoConstraints = false
+    redView.translatesAutoresizingMaskIntoConstraints = false
+    greenView.translatesAutoresizingMaskIntoConstraints = false
+   
+    exerciseFive()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    view.layoutIfNeeded()
+  }
+  
+  
+  // MARK: - Tuesday example answers
+  internal func exerciseOne() {
+    redView.isHidden = false
+    greenView.isHidden = false
+    
+    redView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    redView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+    redView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    redView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -4.0).isActive = true
+    
+    greenView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    greenView.widthAnchor.constraint(equalTo: redView.widthAnchor).isActive = true
+    greenView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    greenView.heightAnchor.constraint(equalTo: redView.heightAnchor).isActive = true
+  }
+  
+  internal func exerciseTwo() {
+    blueView.isHidden = false
+    pinkView.isHidden = false
+    redView.isHidden = false
+    greenView.isHidden = false
+    
+    blueView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    blueView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+    blueView.trailingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    blueView.heightAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+    
+    pinkView.heightAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+    pinkView.widthAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+    pinkView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+
+    redView.heightAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+    redView.widthAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+    redView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    
+    greenView.leadingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    greenView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    greenView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    greenView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+  }
+  
+  internal func exerciseThree() {
+    redView.isHidden = false
+    greenView.isHidden = false
+    
+    redView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+    redView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+    redView.heightAnchor.constraint(equalTo: self.redView.widthAnchor).isActive = true
+    
+    greenView.centerYAnchor.constraint(equalTo: redView.centerYAnchor).isActive = true
+    greenView.centerXAnchor.constraint(equalTo: redView.centerXAnchor).isActive = true
+    greenView.heightAnchor.constraint(equalTo: redView.heightAnchor, multiplier: 0.5).isActive = true
+    greenView.widthAnchor.constraint(equalTo: greenView.heightAnchor).isActive = true
+  }
+  
+  internal func exerciseFour() {
+    blueView.isHidden = false
+    pinkView.isHidden = false
+    redView.isHidden = false
+    greenView.isHidden = false
+    
+    blueView.trailingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    blueView.widthAnchor.constraint(equalToConstant: 90.0).isActive = true
+    blueView.heightAnchor.constraint(equalToConstant: 90.0).isActive = true
+    blueView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    
+    redView.leadingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    redView.widthAnchor.constraint(equalToConstant: 90.0).isActive = true
+    redView.heightAnchor.constraint(equalToConstant: 90.0).isActive = true
+    redView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    
+    pinkView.bottomAnchor.constraint(equalTo: blueView.topAnchor).isActive = true
+    pinkView.heightAnchor.constraint(equalTo: blueView.heightAnchor).isActive = true
+    pinkView.leadingAnchor.constraint(equalTo: blueView.leadingAnchor).isActive = true
+    pinkView.trailingAnchor.constraint(equalTo: redView.trailingAnchor).isActive = true
+    
+    greenView.topAnchor.constraint(equalTo: blueView.bottomAnchor).isActive = true
+    greenView.heightAnchor.constraint(equalTo: blueView.heightAnchor).isActive = true
+    greenView.leadingAnchor.constraint(equalTo: blueView.leadingAnchor).isActive = true
+    greenView.trailingAnchor.constraint(equalTo: redView.trailingAnchor).isActive = true
+  }
+  
+  internal func exerciseFive() {
+    blueView.isHidden = false
+    
+    let label1 = UILabel()
+    label1.text = "Label the First"
+    label1.translatesAutoresizingMaskIntoConstraints = false
+    
+    let label2 = UILabel()
+    label2.text = "Label Deux"
+    label2.translatesAutoresizingMaskIntoConstraints = false
+    
+    let textField1 = UITextField()
+    textField1.borderStyle = .bezel
+    textField1.placeholder = "UserName"
+    textField1.translatesAutoresizingMaskIntoConstraints = false
+    
+    let textField2 = UITextField()
+    textField2.borderStyle = .bezel
+    textField2.placeholder = "Password"
+    textField2.translatesAutoresizingMaskIntoConstraints = false
+    
+    blueView.addSubview(label1)
+    blueView.addSubview(label2)
+    blueView.addSubview(textField1)
+    blueView.addSubview(textField2)
+    
+    blueView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+    blueView.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    blueView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+    blueView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    
+    label1.topAnchor.constraint(equalTo: blueView.topAnchor, constant: 40.0).isActive = true
+    label1.leadingAnchor.constraint(equalTo: blueView.leadingAnchor, constant: 8.0).isActive = true
+    label1.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+    label1.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+    
+    label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 16.0).isActive = true
+    label2.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
+    label2.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+    label2.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+    
+    textField1.firstBaselineAnchor.constraint(equalTo: label1.firstBaselineAnchor).isActive = true
+    textField1.trailingAnchor.constraint(equalTo: blueView.trailingAnchor, constant: -8.0).isActive = true
+    textField1.leadingAnchor.constraint(equalTo: label1.trailingAnchor, constant: 8.0).isActive = true
+    
+    textField2.firstBaselineAnchor.constraint(equalTo: label2.firstBaselineAnchor).isActive = true
+    textField2.trailingAnchor.constraint(equalTo: blueView.trailingAnchor, constant: -8.0).isActive = true
+    textField2.leadingAnchor.constraint(equalTo: label2.trailingAnchor, constant: 8.0).isActive = true
+  }
+  
+  // MARK: - Live coding examples
   internal func twoVerticalsAndATrailingGreenWith200Height() {
     blueView.translatesAutoresizingMaskIntoConstraints = false
     pinkView.translatesAutoresizingMaskIntoConstraints = false
