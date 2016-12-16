@@ -23,19 +23,37 @@ class ViewController: UIViewController {
     redView.isHidden = true
     greenView.isHidden = true
     
+    blueView.accessibilityIdentifier = "BLUE"
+    pinkView.accessibilityIdentifier = "PINK"
+    redView.accessibilityIdentifier = "RED"
+    greenView.accessibilityIdentifier = "GREEN"
+    
+    view.translatesAutoresizingMaskIntoConstraints = false
     blueView.translatesAutoresizingMaskIntoConstraints = false
     pinkView.translatesAutoresizingMaskIntoConstraints = false
     redView.translatesAutoresizingMaskIntoConstraints = false
     greenView.translatesAutoresizingMaskIntoConstraints = false
-   
-    exerciseFive()
+    
+    exerciseTwo()
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    view.layoutIfNeeded()
+  override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    
+    
+    let _ = self.blueView.constraints.map { $0.isActive = false }
+    let _ = self.redView.constraints.map { $0.isActive = false }
+    self.view.removeConstraints(self.view.constraints)
+    let currentCollection = self.traitCollection
+    
+    if (currentCollection.verticalSizeClass == .compact) && (newCollection.verticalSizeClass == .regular) {
+      exerciseTwo()
+    }
+    else {
+      exerciseFour()
+    }
+    
+    super.willTransition(to: newCollection, with: coordinator)
   }
-  
   
   // MARK: - Tuesday example answers
   internal func exerciseOne() {
@@ -59,23 +77,33 @@ class ViewController: UIViewController {
     redView.isHidden = false
     greenView.isHidden = false
     
-    blueView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-    blueView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-    blueView.trailingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    blueView.heightAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+    let blueConstraints = [
+    blueView.topAnchor.constraint(equalTo: view.topAnchor),
+    blueView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+    blueView.trailingAnchor.constraint(equalTo: view.centerXAnchor),
+    blueView.heightAnchor.constraint(equalTo: blueView.widthAnchor)
+    ]
     
-    pinkView.heightAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
-    pinkView.widthAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
-    pinkView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    let pinkConstraints = [
+    pinkView.heightAnchor.constraint(equalTo: blueView.widthAnchor),
+    pinkView.widthAnchor.constraint(equalTo: blueView.widthAnchor),
+    pinkView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+    ]
 
-    redView.heightAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
-    redView.widthAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
-    redView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    let redConstraints = [
+      redView.heightAnchor.constraint(equalTo: blueView.widthAnchor),
+      redView.widthAnchor.constraint(equalTo: blueView.widthAnchor),
+      redView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    ]
     
-    greenView.leadingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    greenView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-    greenView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-    greenView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    let greenConstraints = [
+      greenView.leadingAnchor.constraint(equalTo: view.centerXAnchor),
+      greenView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      greenView.topAnchor.constraint(equalTo: view.topAnchor),
+      greenView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    ]
+    
+    let _ = [blueConstraints, pinkConstraints, redConstraints, greenConstraints].flatMap { $0.map { $0.isActive = true } }
   }
   
   internal func exerciseThree() {
@@ -167,6 +195,77 @@ class ViewController: UIViewController {
     textField2.firstBaselineAnchor.constraint(equalTo: label2.firstBaselineAnchor).isActive = true
     textField2.trailingAnchor.constraint(equalTo: blueView.trailingAnchor, constant: -8.0).isActive = true
     textField2.leadingAnchor.constraint(equalTo: label2.trailingAnchor, constant: 8.0).isActive = true
+  }
+  
+  internal func bonus() {
+    // simple, technically incorrect answer
+    blueView.isHidden = false
+    pinkView.isHidden = false
+    redView.isHidden = false
+    greenView.isHidden = false
+    
+    let _ = [
+      blueView.topAnchor.constraint(equalTo: view.topAnchor),
+      blueView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      blueView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      blueView.widthAnchor.constraint(equalTo: blueView.heightAnchor)
+      ].map { $0.isActive = true }
+    
+    let _ = [
+      pinkView.topAnchor.constraint(equalTo: blueView.bottomAnchor),
+      pinkView.leadingAnchor.constraint(equalTo: blueView.leadingAnchor),
+      pinkView.heightAnchor.constraint(equalTo: blueView.heightAnchor, multiplier: 0.618),
+      pinkView.widthAnchor.constraint(equalTo: pinkView.heightAnchor)
+      ].map { $0.isActive = true }
+    
+    let _ = [
+      redView.leadingAnchor.constraint(equalTo: pinkView.trailingAnchor),
+      redView.bottomAnchor.constraint(equalTo: pinkView.bottomAnchor),
+      redView.heightAnchor.constraint(equalTo: pinkView.heightAnchor, multiplier: 0.618),
+      redView.widthAnchor.constraint(equalTo: redView.heightAnchor)
+    ].map { $0.isActive = true }
+    
+    let _ = [
+      greenView.trailingAnchor.constraint(equalTo: redView.trailingAnchor),
+      greenView.bottomAnchor.constraint(equalTo: redView.topAnchor),
+      greenView.heightAnchor.constraint(equalTo: redView.heightAnchor, multiplier: 0.618),
+      greenView.widthAnchor.constraint(equalTo: greenView.heightAnchor)
+      ].map { $0.isActive = true }
+    
+    let purpleView = UIView()
+    purpleView.backgroundColor = .purple
+    purpleView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(purpleView)
+    
+    let brownView = UIView()
+    brownView.backgroundColor = .brown
+    brownView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(brownView)
+    
+    let orangeView = UIView()
+    orangeView.backgroundColor = .orange
+    orangeView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(orangeView)
+    
+    let _ = [
+      purpleView.trailingAnchor.constraint(equalTo: greenView.leadingAnchor),
+      purpleView.topAnchor.constraint(equalTo: greenView.topAnchor),
+      purpleView.heightAnchor.constraint(equalTo: greenView.heightAnchor, multiplier: 0.618),
+      purpleView.widthAnchor.constraint(equalTo: purpleView.heightAnchor)
+    ].map { $0.isActive = true }
+    
+    let _ = [
+      brownView.leadingAnchor.constraint(equalTo: purpleView.leadingAnchor),
+      brownView.topAnchor.constraint(equalTo: purpleView.bottomAnchor),
+      brownView.trailingAnchor.constraint(equalTo: purpleView.centerXAnchor),
+      brownView.bottomAnchor.constraint(equalTo: greenView.bottomAnchor),
+    
+      orangeView.leadingAnchor.constraint(equalTo: brownView.trailingAnchor),
+      orangeView.topAnchor.constraint(equalTo: brownView.topAnchor),
+      orangeView.widthAnchor.constraint(equalTo: brownView.widthAnchor),
+      orangeView.heightAnchor.constraint(equalTo: brownView.heightAnchor)
+      ].map { $0.isActive = true }
+    
   }
   
   // MARK: - Live coding examples
