@@ -176,9 +176,43 @@ Add in the new function that we just called from `viewDidLoad`
     blueView.isHidden = false
 
   }
-
 ```
 
+The cornerstone to using `NSLayoutConstraint` is the `init(item:attribute:relatedBy:toItem:attribute:multiplier:constant:)` function, which needs to be written for each and every constraint you set. In this first example, we need to give a view a defined, `width`, `height`, `x-axis` and `y-axis` constraint -- so we'll need to create four of them.
+
+Let's start out with the view's `x` and `y` position:
+
+```swift
+  let blueCenterXConstraint =
+      NSLayoutConstraint(item: blueView,  // 1.
+        attribute: .centerX,              // 2.
+        relatedBy: .equal,                // 3.
+        toItem: self.view,                // 4.
+        attribute: .centerX,              // 5.
+        multiplier: 1.0,                  // 6.
+        constant: 0.0)                    // 7.
+
+  let blueCenterYConstraint =
+      NSLayoutConstraint(item: blueView,
+        attribute: .centerY,
+        relatedBy: .equal,
+        toItem: self.view,
+        attribute: .centerY,
+        multiplier: 1.0,
+        constant: 0.0)
+```
+
+Here's a breakdown of what's happening:
+
+1. The `item` parameter is the UI element that you're adding a constraint to
+2. The first `attribute` describes what point of the `item` you're interested in adding a constraint to. If you reviewed the list linked earlier, you'd see that `centerX` refers to the center point on the view in the x-axis.
+3. `relatedBy:` determines the relationship in terms of a comparison operator, it can be `equal`, `greaterThanOrEqualTo`, `lessThanOrEqualTo`.
+4. The `toItem` is the other view that you're setting the constraint relative to; in our case it will be set relative to the parent view, `self.view`
+5. The second `attribute` refers to the `toItem`'s attribute you're constraining relative to. We want to center `blueView` in its parent view, but we could as easily constrain the `blueView`'s `centerX` to `self.view`'s `.leading`, which would place the center-x on the `blueView` on the left edge of the screen.
+6. `multiplier` allows you to set a proportional constraint by setting a multiplier. For example, you could give `blueView` a width `.equal` to that of `self.view`, but set it's `multiplier` to `0.5` and it would give `blueView` a width 1/2 the size of `self.view`.
+7. `constant` allows you to give a specific value to offset/inset your constraint. For example, you could align `blueView` to `self.view` on their `.leading` edges, but add an 8pt margin by giving it a value of `constant: 8.0`.
+
+The overall effect of the above two lines is that the `blueView`'s center point will be equal to `self.view`, effectively centering it on screen.
 
 
 ---
