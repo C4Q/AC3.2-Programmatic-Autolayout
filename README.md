@@ -214,6 +214,165 @@ Here's a breakdown of what's happening:
 
 The overall effect of the above two lines is that the `blueView`'s center point will be equal to `self.view`, effectively centering it on screen.
 
+With the `x` and `y` coordinate set, we now need to specify a `width` and `height`, as they are `(0,0)` by default on a `UIView`.
+
+```swift
+  let blueWidthConstraint =
+      NSLayoutConstraint(item: blueView,
+        attribute: .width,
+        relatedBy: .equal,
+        toItem: nil,                  // 1.
+        attribute: .notAnAttribute,   // 2.
+        multiplier: 1.0,
+        constant: 200.0)              // 3.
+
+  let blueHeightConstraint =
+      NSLayoutConstraint(item: blueView,
+        attribute: .height,
+        relatedBy: .equal,
+        toItem: nil,
+        attribute: .notAnAttribute,
+        multiplier: 1.0,
+        constant: 200.0)
+```
+
+You should be able to read the above using the breakdown from the prior example, but there is an important difference here:
+
+1. We're setting a width for `blueView`, but we're not setting it relative to any other UI element. So this time around the `toItem` is `nil` to indicate that.
+2. When we don't have another UI element to set some attribute relatively, we need to specify the second `attribute` (the one meant for `toItem`) is `.notAnAttribute` because... well, we're not setting the constraint relative to another view's attribute.
+3. The `constant` value is where we specifically determine the value for the `width`.
+
+The last thing we need to do is actually *add* these constraints to the views that needs them. We can do that using the `addConstraints` mehtod:
+
+```swift
+  self.blueView.addConstraints([blueCenterXConstraint, blueCenterYConstraint,   blueWidthConstraint, blueHeightConstraint])
+```
+
+Your function at this point should look like this:
+
+```swift
+  internal func centerViewWithNSLayoutConstraint() {
+    blueView.isHidden = false
+
+    // center x
+    let blueCenterXConstraint = NSLayoutConstraint(item: blueView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+
+    // center y
+    let blueCenterYConstraint = NSLayoutConstraint(item: blueView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+
+    // width
+    let blueWidthConstraint = NSLayoutConstraint(item: blueView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
+
+    // height
+    let blueHeightConstraint = NSLayoutConstraint(item: blueView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
+
+    // add constraints
+    self.blueView.addConstraints([blueCenterXConstraint, blueCenterYConstraint, blueWidthConstraint, blueHeightConstraint])
+  }
+```
+
+Run the project at this point and let's see what we get...
+
+#### CRASH!
+
+```
+// In console, you'll see these messages among the output
+
+The view hierarchy is not prepared for the constraint: ...
+
+View hierarchy unprepared for constraint.
+  Constraint: <NSLayoutConstraint:0x600000088430 BLUE.centerX == UIView:0x7fe7ecd08e60.centerX
+
+...That view's superview: NO SUPERVIEW...
+```
+
+The error messages a little misleading as to why we get a problem, but I'll let you in on the secret: with `NSLayoutContraint` you have to make sure the right views own the right constraints.
+
+---
+#### Constraint Ownership
+
+Our `blueView` should have knowledge of its `width` and `height` since we set them as a constant and not relative to any other view. However, the `centerX` and `centerY` constraints can only be fulfilled by `blueView`s super view, because only the super view has knowledge of it's on space.
+
+Think of it this way:
+
+Suppose I ask you to make a picture frame for me. I tell you I'd like it to be 5"x7" and centered on my bedroom wall. You should have no problem making the frame 5"x7" on your own, (assuming you know how to measure 📐 and cut wood 🌲). Though to understand *where* the "center" of my wall is, you'd have to measure the wall. The only way you'd know the center point of the frame, would be to know where the center is on the wall it was being put in. So in some ways, the wall determines what "center" really means for the picture frame.
+
+This is what it is like in our app. For autolayout to know where `center` is for `blueView`, it has to ask `self.view` -- it's the "wall" we're putting the "frame" on. What we need to do now is add the constraints to their proper owning views:
+
+```swift
+    // self.view, the parent, is told to center the blueView in its bounds
+    self.view.addConstraints([blueCenterYConstraint, blueCenterXConstraint])
+    // blueView is told to be 200x200
+    self.blueView.addConstraints([blueWidthConstraint, blueHeightConstraint])
+```
+
+Re-run the project once more ...
+
+<img src="./Images/autoresizing_mask.png" width="400" alt="Autoresizing, ugh!">
+
+We've prevented a crash and we can see the view on screen, but it doesnt have the right size or position, and we're getting an error in console:
+
+```
+Unable to simultaneously satisfy constraints.
+  Probably at least one of the constraints in the following list is one you don't want.
+  Try this:
+    (1) look at each constraint and try to figure out which you don't expect;
+    (2) find the code that added the unwanted constraint or constraints and fix it.
+  (Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints)
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x600000089060 h=--& v=--& BLUE.width == 259   (active, names: BLUE:0x7f8f0a40a220 )>",
+    "<NSLayoutConstraint:0x600000087d00 BLUE.width == 200   (active, names: BLUE:0x7f8f0a40a220 )>"
+)
+```
+
+You're going to run into this fairly often, but remember this one portion:
+
+```
+"<NSAutoresizingMaskLayoutConstraint:0x600000089060 h=--& v=--&
+```
+
+Any time you see `NSAutoresizingMaskLayoutConstraint`, it means you forgot to set `translatesAutoresizingMaskIntoConstraints` property on a view to `false`. Add `blueView.translatesAutoresizingMaskIntoConstraints = false` to the line just below where you set `isHidden` to `false`. You code should look like:
+
+```swift
+  internal func centerViewWithNSLayoutConstraint() {
+    blueView.isHidden = false
+    blueView.translatesAutoresizingMaskIntoConstraints = false
+
+    let blueWidthConstraint = NSLayoutConstraint(item: blueView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
+
+    let blueHeightConstraint = NSLayoutConstraint(item: blueView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
+
+    let blueCenterXConstraint = NSLayoutConstraint(item: blueView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+
+    let blueCenterYConstraint =
+      NSLayoutConstraint(item: blueView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+
+    self.view.addConstraints([blueCenterYConstraint, blueCenterXConstraint])
+    self.blueView.addConstraints([blueWidthConstraint, blueHeightConstraint])
+  }
+```
+
+What are autoresizing masks? Check out [this answer on Reddit](https://www.reddit.com/r/iOSProgramming/comments/3f88uh/autoresizing_masks_what_are_they/ctm80vj/) for a great explanation. It suffices to know that resizing masks pre-date Autolayout and should be avoided. What this means in practical terms is that you're going to always have to set `translatesAutoresizingMaskIntoConstraints` to `false` for *every* view you're laying out.
+
+<img src="./Images/centered_layout_constraints.png" width="400" alt="Centered blue view with proper constraints">
+
+---
+
+#### Practice Exercises
+
+Using `NSLayoutConstraint` and the remaining three views:
+
+1. Pin the `redView`'s bottom-left corner, to the bottom-left corner of the screen. Give it a `width` and `height` of `200.0`
+2. Pin the `top` of `pinkView` to the bottom of `blueView`, and make it centered vertically. Give it a `height` and `width` that is half of `blueView`'s.
+3. Pin the `greenView`'s top-left corner to the top-left corner of the screen, but give it a `16pt` margin. The `width` should be equal to `redView`'s width and the `height` should be equal to `pinkView`'s height.
+
+The final product should look like:
+
+<img src="./Images/nslayourconstraint_ppractice.png" width="400" alt="NSLayoutContraint practice results in sim">
+
+---
+### 7. Visual Format Language
+
 
 ---
 ### Exercises

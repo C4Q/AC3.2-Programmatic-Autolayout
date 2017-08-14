@@ -28,14 +28,17 @@ class ViewController: UIViewController {
     redView.accessibilityIdentifier = "RED"
     greenView.accessibilityIdentifier = "GREEN"
     
-    view.translatesAutoresizingMaskIntoConstraints = false
-    blueView.translatesAutoresizingMaskIntoConstraints = false
-    pinkView.translatesAutoresizingMaskIntoConstraints = false
-    redView.translatesAutoresizingMaskIntoConstraints = false
-    greenView.translatesAutoresizingMaskIntoConstraints = false
-    
+//    view.translatesAutoresizingMaskIntoConstraints = false
+//    blueView.translatesAutoresizingMaskIntoConstraints = false
+//    pinkView.translatesAutoresizingMaskIntoConstraints = false
+//    redView.translatesAutoresizingMaskIntoConstraints = false
+//    greenView.translatesAutoresizingMaskIntoConstraints = false
+	
 //    exerciseTwo()
 	centerViewWithNSLayoutConstraint()
+	practice_1()
+	practice_2()
+	practice_3()
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -409,6 +412,7 @@ class ViewController: UIViewController {
   
   internal func centerViewWithNSLayoutConstraint() {
 	blueView.isHidden = false
+		blueView.translatesAutoresizingMaskIntoConstraints = false
 	
     let blueWidthConstraint = NSLayoutConstraint(item: blueView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
     
@@ -418,12 +422,62 @@ class ViewController: UIViewController {
     
     let blueCenterYConstraint =
       NSLayoutConstraint(item: blueView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
-    
-    blueView.translatesAutoresizingMaskIntoConstraints = false
-    
+	
     self.view.addConstraints([blueCenterYConstraint, blueCenterXConstraint])
     self.blueView.addConstraints([blueWidthConstraint, blueHeightConstraint])
+	
+//	self.blueView.addConstraints([blueCenterXConstraint, blueCenterYConstraint, blueWidthConstraint, blueHeightConstraint])
   }
+	
+	// mark: nslayoutconstraint practice exercise answers
+	
+	func practice_1() {
+		self.redView.isHidden = false
+		self.redView.translatesAutoresizingMaskIntoConstraints = false
+		
+		let redWidthConstraint = NSLayoutConstraint(item: redView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
+		
+		let redHeightConstraint = NSLayoutConstraint(item: redView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
+		
+		let redLeadingConstraint = NSLayoutConstraint(item: redView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1.0, constant: 0.0)
+		
+		let redBottomConstraint = NSLayoutConstraint(item: redView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+		
+		self.view.addConstraints([redLeadingConstraint, redBottomConstraint])
+		self.redView.addConstraints([redWidthConstraint, redHeightConstraint])
+	}
+	
+	func practice_2() {
+		self.pinkView.isHidden = false
+		self.pinkView.translatesAutoresizingMaskIntoConstraints = false
+		
+		let pinkWidthConstraint = NSLayoutConstraint(item: pinkView, attribute: .width, relatedBy: .equal, toItem: blueView, attribute: .width, multiplier: 0.5, constant: 0.0)
+		
+		let pinkHeightConstraint = NSLayoutConstraint(item: pinkView, attribute: .height, relatedBy: .equal, toItem: blueView, attribute: .height, multiplier: 0.5, constant: 0.0)
+		
+		let pinkTopConstraint = NSLayoutConstraint(item: pinkView, attribute: .top, relatedBy: .equal, toItem: blueView, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+		
+		let pinkCenterXConstraint = NSLayoutConstraint(item: pinkView, attribute: .centerX, relatedBy: .equal, toItem: blueView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+		
+		self.view.addConstraints([pinkWidthConstraint, pinkHeightConstraint,pinkTopConstraint, pinkCenterXConstraint])
+	}
+	
+	func practice_3() {
+		self.greenView.isHidden = false
+		self.greenView.translatesAutoresizingMaskIntoConstraints = false
+		
+		let greenWidthConstraint = NSLayoutConstraint(item: greenView, attribute: .width, relatedBy: .equal, toItem: redView, attribute: .width, multiplier: 1.0, constant: 0.0)
+		
+		let greenHeightConstraint = NSLayoutConstraint(item: greenView, attribute: .height, relatedBy: .equal, toItem: pinkView, attribute: .height, multiplier: 1.0, constant: 0.0)
+		
+		let greenLeadingConstraint = NSLayoutConstraint(item: greenView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1.0, constant: 16.0)
+		
+		let greenTopConstraint = NSLayoutConstraint(item: greenView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: 16.0)
+		
+		self.view.addConstraints([greenWidthConstraint, greenHeightConstraint, greenTopConstraint, greenLeadingConstraint])
+		
+	}
+
   
   internal func codeSnip() {
     let blueWidth = "H:[tobias(200.0)]"
