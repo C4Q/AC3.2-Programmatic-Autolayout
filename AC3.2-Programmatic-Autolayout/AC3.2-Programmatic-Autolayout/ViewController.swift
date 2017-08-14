@@ -34,7 +34,8 @@ class ViewController: UIViewController {
     redView.translatesAutoresizingMaskIntoConstraints = false
     greenView.translatesAutoresizingMaskIntoConstraints = false
     
-    exerciseTwo()
+//    exerciseTwo()
+	centerViewWithNSLayoutConstraint()
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -407,6 +408,8 @@ class ViewController: UIViewController {
   }
   
   internal func centerViewWithNSLayoutConstraint() {
+	blueView.isHidden = false
+	
     let blueWidthConstraint = NSLayoutConstraint(item: blueView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
     
     let blueHeightConstraint = NSLayoutConstraint(item: blueView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0)
