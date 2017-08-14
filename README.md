@@ -363,15 +363,117 @@ What are autoresizing masks? Check out [this answer on Reddit](https://www.reddi
 Using `NSLayoutConstraint` and the remaining three views:
 
 1. Pin the `redView`'s bottom-left corner, to the bottom-left corner of the screen. Give it a `width` and `height` of `200.0`
-2. Pin the `top` of `pinkView` to the bottom of `blueView`, and make it centered vertically. Give it a `height` and `width` that is half of `blueView`'s.
-3. Pin the `greenView`'s top-left corner to the top-left corner of the screen, but give it a `16pt` margin. The `width` should be equal to `redView`'s width and the `height` should be equal to `pinkView`'s height.
+2. Pin the `top` of `pinkView` to the bottom of `blueView`, and make it centered vertically. Give it a `height` and `width` that is half of `blueView`'s. *Note: this does not mean to give it a `constant` value of 100! You should do it some other way...*
+3. Pin the `greenView`'s top-left corner to the top-left corner of the screen, but give it a `16pt` margin. The `width` should be equal to `redView`'s width and the `height` should be equal to `pinkView`'s height. *Note: AGAIN, this does not mean to give it a defined `constant` value You should be doing these **relative** size changes some other way...*
 
 The final product should look like:
 
 <img src="./Images/nslayourconstraint_ppractice.png" width="400" alt="NSLayoutContraint practice results in sim">
 
 ---
-### 7. Visual Format Language
+### 7. Visual Format Language (VFL)
+
+VFL came out as a way to try to cut down on the amount of code that was necessary to write with `NSLayoutContraint`. Unfortunately, it looses some of the flexibility possible with `NSLayoutContraint` in the process. For example, you cannot center a view using only VFL!
+
+> Developer's Note: For how to do it though, check out [this StackOverflow answer](https://stackoverflow.com/a/13148012). I also provide an example in the `/Exercises.md` file
+
+Though it does make some other things quite brief. Let's take a look at how we'd pin `blueView` to the top-left corner of the screen and make it `200ptx200pt`:
+
+```swift
+  func topLeftCornerWithVFL() {
+    blueView.translatesAutoresizingMaskIntoConstraints = false
+    blueView.isHidden = false
+
+    // V = vertical axis
+    // H = horizontal axis
+    // (value) tells you the "constant" of the constraint
+    // | = shorthand for superview
+    // [] surrounds individual views
+    let verticalConstraint: String = "V:|[blueView(200.0)]"    // 1.
+    let horizontalConstraint: String = "H:|[blueView(200.0)]"  // 2.
+    let viewDictionary = [ "superView" : self.view, "blueView" : blueView ] // 3.
+
+    let constraintsVertical = NSLayoutConstraint.constraints(withVisualFormat: verticalConstraint,
+        options: [],
+        metrics: nil,
+        views: viewDictionary) // 4.
+
+    let constraintsHorizontal = NSLayoutConstraint.constraints(withVisualFormat: horizontalConstraint,
+        options: [],
+        metrics: nil,
+        views: viewDictionary)
+
+    // 5.
+    NSLayoutConstraint.activate(constraintsVertical)
+    NSLayoutConstraint.activate(constraintsHorizontal)
+  }
+```
+
+The breakdown:
+
+1. In this line, we create two constraints with a simple string:
+  - We set the `.top` of `blueView` equal to the top of `self.view`: `V:|[blueView]`. This line says "take the vertical edge of blueView, and place it right next to its super view's vertical edge"
+  - We set the `.height` of `blueView` equal to 200.0: `[blueView(200.0)]`
+2. Here, we set two more constraints:
+  - We set the `.leading` of `blueView` equal to the `.leading` of `self.view`
+  - We set the `.width` of `blueView` equal to 200.0
+3. VFL needs a way to parse the string you pass it, and it does this using a `Dictionary` that you define. For our example, we created a key of `blueView` with a value of `self.blueView`. So when autolayout parses the VFL string, it will look for occurances of "blueView" and understand it is suppose to reference `self.blueView` in making these constraints.
+4. This is where we pass in the `Dictionary` of our mapped keys/views for use in autolayout.
+5. Lastly, we need to "active" these constraints before they are actually applied.
+
+So, what would pinning the blue view to the bottom left corner look like? We really only need to change one character, the pipe (`|`), and move it to the end of each string.
+
+```swift
+  let verticalConstraint: String = "V:[blueView(200.0)]|"
+  let horizontalConstraint: String = "H:[blueView(200.0)]|"
+```
+
+<br>
+<details><summary>Dicuss: How does this work?</summary>
+<br><br>
+
+Since the <code>|</code> character indicates the edge of a super view in that axis, by placing the <code>|</code> on the direct right of the <code>blueView</code> on the vertical plane, we're pinning it to the bottom of its superview, <code>self.view</code>.
+<br><br>
+On the horizontal plane, adding the <code>|</code> character at the end results in pinning the view to the right edge of its superview.
+<br><br>
+So taken together, we've pinned the bottom edge and right edge of the view, while preserving its size.
+
+<br><br>
+</details>
+<br>
+
+---
+#### Practice Exercises
+
+1. Pin each view to a corner of the screen. Give them all a width and height of 100pt
+2. Take three views and line them up horizontally against the top of the screen:
+  - Give them a width of 100 and a height of 50
+  - Take the leftmost view and pin it `8pt` from the `leading` edge
+  - Pin the other two views `8pt` from each other, starting from the leftmost one
+  - Pin them `8pt` from the top
+
+You result should look like:
+
+<img src="./Images/three_horizontal_vfl.png" width="400" alt="Three horizontal views">
+
+---
+### 8. Layout Anchors
+
+The most recent development in the world of autolayout has been the rise of `NSLayoutAnchor`. It's somewhere between `NSLayoutConstraint` and VSL in terms of coding needed and self-documenting. But it has the advantage of being driven by autocomplete, so you will (generally) write code much faster in this method.
+
+What does it look like to center `blueView` and give it a width and height of 200?
+
+```swift
+  func centerViewWithLayoutAnchors() {
+    blueView.isHidden = false
+    blueView.translatesAutoresizingMaskIntoConstraints = false
+
+    blueView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+    blueView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+    blueView.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
+    blueView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
+  }
+```
 
 
 ---

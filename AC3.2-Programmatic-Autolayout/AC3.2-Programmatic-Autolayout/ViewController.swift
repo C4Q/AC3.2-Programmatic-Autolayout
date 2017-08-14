@@ -35,10 +35,16 @@ class ViewController: UIViewController {
 //    greenView.translatesAutoresizingMaskIntoConstraints = false
 	
 //    exerciseTwo()
-	centerViewWithNSLayoutConstraint()
-	practice_1()
-	practice_2()
-	practice_3()
+//	centerViewWithNSLayoutConstraint()
+//	practice_1()
+//	practice_2()
+//	practice_3()
+	
+//	centerViewWithVFL()
+//	cornerConstraints()
+//	pinToCorners()
+//	threeHorizontalViews()
+	centerViewWithLayoutAnchors()
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -337,6 +343,10 @@ class ViewController: UIViewController {
   }
   
   internal func threeHorizontalViews() {
+	blueView.isHidden = false
+	pinkView.isHidden = false
+	greenView.isHidden = false
+	
     let dict: [String : UIView] = [
       "blue" : blueView,
       "pink" : pinkView,
@@ -371,6 +381,7 @@ class ViewController: UIViewController {
   internal func cornerConstraints() {
     
     let viewDictionary = [ "superView" : self.view, "view1" : blueView ]
+	blueView.isHidden = false
     // V = vertical axis
     // H = horizontal axis
     // (value) tells you the "constant" of the constraint
@@ -387,8 +398,8 @@ class ViewController: UIViewController {
     // V -> Top-to-bottom
     // H -> Left-to-Right
     // pins to top left corner
-    let constraint3 = "V:|[view1(50.0)]"
-    let constraint4 = "H:|[view1(100.0)]"
+    let constraint3 = "V:|[view1(200.0)]"
+    let constraint4 = "H:|[view1(200.0)]"
     
     // pins to bottom right corner
     let constraint5 = "V:[view1(50.0)]|"
@@ -402,8 +413,8 @@ class ViewController: UIViewController {
     let constraint9 = "V:[view1(50.0)]|"
     let constraint10 = "H:|[view1(100.0)]"
     
-    let constraintsVertical = NSLayoutConstraint.constraints(withVisualFormat: constraint5, options: [], metrics: nil, views: viewDictionary)
-    let constraintsHorizontal = NSLayoutConstraint.constraints(withVisualFormat: constraint6, options: [], metrics: nil, views: viewDictionary)
+    let constraintsVertical = NSLayoutConstraint.constraints(withVisualFormat: constraint3, options: [], metrics: nil, views: viewDictionary)
+    let constraintsHorizontal = NSLayoutConstraint.constraints(withVisualFormat: constraint4, options: [], metrics: nil, views: viewDictionary)
     
     blueView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate(constraintsVertical)
@@ -427,7 +438,17 @@ class ViewController: UIViewController {
     self.blueView.addConstraints([blueWidthConstraint, blueHeightConstraint])
 	
 //	self.blueView.addConstraints([blueCenterXConstraint, blueCenterYConstraint, blueWidthConstraint, blueHeightConstraint])
-  }
+	}
+	
+	func centerViewWithLayoutAnchors() {
+		blueView.isHidden = false
+		blueView.translatesAutoresizingMaskIntoConstraints = false
+		
+		blueView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+		blueView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+		blueView.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
+		blueView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true 
+	}
 	
 	// mark: nslayoutconstraint practice exercise answers
 	
@@ -478,6 +499,63 @@ class ViewController: UIViewController {
 		
 	}
 
+	
+	func pinToCorners() {
+		self.redView.isHidden = false
+		self.greenView.isHidden = false
+		self.pinkView.isHidden = false
+		self.blueView.isHidden = false
+		
+		self.redView.translatesAutoresizingMaskIntoConstraints = false
+		self.greenView.translatesAutoresizingMaskIntoConstraints = false
+		self.pinkView.translatesAutoresizingMaskIntoConstraints = false
+		self.blueView.translatesAutoresizingMaskIntoConstraints = false
+		
+		let viewsDictionary = [
+			"redView":redView,
+			"blueView":blueView,
+			"greenView":greenView,
+			"pinkView":pinkView
+		]
+		
+		let metricsDictionary = [
+			"standardW":100,
+			"standardH":100
+		]
+		
+		let topBlue = "V:|[blueView(standardH)]"
+		let leftBlue = "H:|[blueView(standardW)]"
+		
+		let bottomRed = "V:[redView(standardH)]|"
+		let leftRed = "H:|[redView(standardW)]"
+		
+		let rightGreen = "H:[greenView(standardW)]|"
+		let topGreen = "V:|[greenView(standardH)]"
+		
+		let bottomPink = "V:[pinkView(standardH)]|"
+		let rightPink = "H:[pinkView(standardW)]|"
+		
+		let blueHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: leftBlue, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		let blueVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: topBlue, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		
+		let redHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: leftRed, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		let redVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: bottomRed, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		
+		let greenHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: rightGreen, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		let greenVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: topGreen, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		
+		let pinkHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: rightPink, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		let pinkVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: bottomPink, options: [], metrics: metricsDictionary, views: viewsDictionary)
+		
+		NSLayoutConstraint.activate(blueHorizontalConstraints)
+		NSLayoutConstraint.activate(blueVerticalConstraints)
+		NSLayoutConstraint.activate(redHorizontalConstraints)
+		NSLayoutConstraint.activate(redVerticalConstraints)
+		NSLayoutConstraint.activate(greenHorizontalConstraints)
+		NSLayoutConstraint.activate(greenVerticalConstraints)
+		NSLayoutConstraint.activate(pinkHorizontalConstraints)
+		NSLayoutConstraint.activate(pinkVerticalConstraints)
+	}
   
   internal func codeSnip() {
     let blueWidth = "H:[tobias(200.0)]"
@@ -495,6 +573,8 @@ class ViewController: UIViewController {
   
   internal func centerViewWithVFL() {
     // visual format language
+	blueView.isHidden = false
+	
     let blueWidth = "H:[view]-(<=0.0)-[tobias(200.0)]"
     let blueHight = "V:[view]-(<=0.0)-[tobias(200.0)]"
     let views = ["tobias" : blueView,
