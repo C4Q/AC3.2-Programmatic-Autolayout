@@ -156,10 +156,17 @@ We're going to keep all of the views we're not currently working with, hidden. S
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    // set all the hidden until we need to see one
     blueView.isHidden = true
     pinkView.isHidden = true
     redView.isHidden = true
     greenView.isHidden = true
+
+    // These identifiers will help debug constraints breaking
+	blueView.accessibilityIdentifier = "BLUE"
+	pinkView.accessibilityIdentifier = "PINK"
+	redView.accessibilityIdentifier = "RED"
+	greenView.accessibilityIdentifier = "GREEN"
 
     self.centerViewWithNSLayoutConstraint() // we will create this in a moment
   }
