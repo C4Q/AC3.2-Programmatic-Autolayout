@@ -44,7 +44,9 @@ class ViewController: UIViewController {
 //	cornerConstraints()
 //	pinToCorners()
 //	threeHorizontalViews()
-	centerViewWithLayoutAnchors()
+//	centerViewWithLayoutAnchors()
+	twoVerticalsAndATrailingGreenWith200Height()
+//	threeVerticallyAlignedViews()
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -280,6 +282,9 @@ class ViewController: UIViewController {
   
   // MARK: - Live coding examples
   internal func twoVerticalsAndATrailingGreenWith200Height() {
+	blueView.isHidden = false
+	pinkView.isHidden = false
+	greenView.isHidden = false
     blueView.translatesAutoresizingMaskIntoConstraints = false
     pinkView.translatesAutoresizingMaskIntoConstraints = false
     greenView.translatesAutoresizingMaskIntoConstraints = false
@@ -301,23 +306,26 @@ class ViewController: UIViewController {
     // green leading == blue trailing
     // green trailing == view trailing
     // green top == blue top
-    // green height == 200.0
+    // green height == 100.0
     greenView.topAnchor.constraint(equalTo: blueView.topAnchor).isActive = true
-    greenView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
-    greenView.leadingAnchor.constraint(equalTo: blueView.trailingAnchor).isActive = true
-    greenView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 200.0).isActive = true
+    greenView.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+	greenView.leadingAnchor.constraint(equalTo: blueView.trailingAnchor, constant: 8.0).isActive = true
+    greenView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8.0).isActive = true
     
     let label = UILabel()
     label.text = "Hello, World"
     label.translatesAutoresizingMaskIntoConstraints = false
     
     greenView.addSubview(label)
-    label.centerXAnchor.constraint(equalTo: greenView.centerXAnchor).isActive = true
+    label.leadingAnchor.constraint(equalTo: greenView.leadingAnchor).isActive = true
     label.centerYAnchor.constraint(equalTo: greenView.centerYAnchor).isActive = true
 
   }
   
   internal func threeVerticallyAlignedViews() {
+	blueView.isHidden = false
+	pinkView.isHidden = false
+	greenView.isHidden = false
     blueView.translatesAutoresizingMaskIntoConstraints = false
     pinkView.translatesAutoresizingMaskIntoConstraints = false
     greenView.translatesAutoresizingMaskIntoConstraints = false
@@ -447,7 +455,7 @@ class ViewController: UIViewController {
 		blueView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
 		blueView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
 		blueView.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
-		blueView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true 
+		blueView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
 	}
 	
 	// mark: nslayoutconstraint practice exercise answers

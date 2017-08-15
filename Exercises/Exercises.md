@@ -175,3 +175,46 @@
 }
 ```
 
+### 5. Shifting GreenView Over
+
+```swift
+  	internal func twoVerticalsAndATrailingGreenWith200Height() {
+		blueView.isHidden = false
+		pinkView.isHidden = false
+		greenView.isHidden = false
+	    blueView.translatesAutoresizingMaskIntoConstraints = false
+	    pinkView.translatesAutoresizingMaskIntoConstraints = false
+	    greenView.translatesAutoresizingMaskIntoConstraints = false
+
+	    // center X & Y, 100pt sides
+	    blueView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+	    blueView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+	    blueView.widthAnchor.constraint(equalToConstant: 100.0).isActive = true
+	    blueView.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+
+	    // center X, 100pt sides, lined up by trailing/leading. -8pt from blue view
+	    pinkView.bottomAnchor.constraint(equalTo: blueView.topAnchor, constant: -8.0).isActive = true
+	    pinkView.widthAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+	    pinkView.heightAnchor.constraint(equalTo: pinkView.widthAnchor).isActive = true
+	    pinkView.leadingAnchor.constraint(equalTo: blueView.leadingAnchor).isActive = true
+	    pinkView.trailingAnchor.constraint(equalTo: blueView.trailingAnchor).isActive = true
+
+
+	    // green leading == blue trailing
+	    // green trailing == view trailing
+	    // green top == blue top
+	    // green height == 100.0
+	    greenView.topAnchor.constraint(equalTo: blueView.topAnchor).isActive = true
+	    greenView.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+		greenView.leadingAnchor.constraint(equalTo: blueView.trailingAnchor, constant: 8.0).isActive = true
+	    greenView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8.0).isActive = true
+
+	    let label = UILabel()
+	    label.text = "Hello, World"
+	    label.translatesAutoresizingMaskIntoConstraints = false
+
+	    greenView.addSubview(label)
+	    label.leadingAnchor.constraint(equalTo: greenView.leadingAnchor).isActive = true
+	    label.centerYAnchor.constraint(equalTo: greenView.centerYAnchor).isActive = true
+  	}
+```

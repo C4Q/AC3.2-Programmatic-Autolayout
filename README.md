@@ -26,9 +26,9 @@ Alternative to defining constraints in Storyboard
 1. Understand the anatomy of a constraint
 2. Revisit some simple Interface builder autolayout examples in storyboard
 3. Translate storyboard constraints using three methods:
-  1. `NSLayoutConstraint`
-  2. `Visual Format Language` (VFL)
-  3. `NSLayoutAnchor`
+	1. `NSLayoutConstraint`
+	2. `Visual Format Language` (VFL)
+	3. `NSLayoutAnchor`
 4. Look at some common constraint and UI errors
 5. Understand the View Debugger
 
@@ -114,8 +114,8 @@ If an optional constraint cannot be satisfied, it will just skip it and continue
 
 We first took a look at CH&CR in the [second table views lesson](https://github.com/C4Q/AC3.2-Tableviews_Part_2#content-huggingcompression-resistance-chcr), but in short:
 
-  - **Content Hugging**: how much you want to resist expanding (defaults to low/`250` because its better for content to expand than shrink if necessary)
-  - **Compression Resistance**: how much you want to resist growing (defaults to `750`)
+	- **Content Hugging**: how much you want to resist expanding (defaults to low/`250` because its better for content to expand than shrink if necessary)
+	- **Compression Resistance**: how much you want to resist growing (defaults to `750`)
 
 ---
 ### 5. Defining Constraints Programmatically
@@ -375,9 +375,9 @@ The final product should look like:
 
 VFL came out as a way to try to cut down on the amount of code that was necessary to write with `NSLayoutContraint`. Unfortunately, it looses some of the flexibility possible with `NSLayoutContraint` in the process. For example, you cannot center a view using only VFL!
 
-> Developer's Note: For how to do it though, check out [this StackOverflow answer](https://stackoverflow.com/a/13148012). I also provide an example in the `/Exercises.md` file
+> Developer's Note: For how to do it though, check out [this StackOverflow answer](https://stackoverflow.com/a/13148012). I also provide an example in the [`/Exercises.md`](https://github.com/C4Q/AC3.2-Programmatic-Autolayout/blob/master/Exercises/Exercises.md#2-centering-something-with-vfl) file
 
-Though it does make some other things quite brief. Let's take a look at how we'd pin `blueView` to the top-left corner of the screen and make it `200ptx200pt`:
+Though VFL does make writing certain constraints quite brief. Let's take a look at how we'd pin `blueView` to the top-left corner of the screen and make it `200ptx200pt`:
 
 ```swift
   func topLeftCornerWithVFL() {
@@ -386,8 +386,9 @@ Though it does make some other things quite brief. Let's take a look at how we'd
 
     // V = vertical axis
     // H = horizontal axis
+    // : = starting the constraints
+    // | = refers to the superview
     // (value) tells you the "constant" of the constraint
-    // | = shorthand for superview
     // [] surrounds individual views
     let verticalConstraint: String = "V:|[blueView(200.0)]"    // 1.
     let horizontalConstraint: String = "H:|[blueView(200.0)]"  // 2.
@@ -419,13 +420,13 @@ The breakdown:
   - We set the `.width` of `blueView` equal to 200.0
 3. VFL needs a way to parse the string you pass it, and it does this using a `Dictionary` that you define. For our example, we created a key of `blueView` with a value of `self.blueView`. So when autolayout parses the VFL string, it will look for occurances of "blueView" and understand it is suppose to reference `self.blueView` in making these constraints.
 4. This is where we pass in the `Dictionary` of our mapped keys/views for use in autolayout.
-5. Lastly, we need to "active" these constraints before they are actually applied.
+5. Lastly, we need to `activate` these constraints before they are actually applied.
 
-So, what would pinning the blue view to the bottom left corner look like? We really only need to change one character, the pipe (`|`), and move it to the end of each string.
+So, what would pinning the blue view to the bottom left corner look like? We really only need to change one character, the pipe (`|`), and move it to the end of the `verticalConstraint` string.
 
 ```swift
   let verticalConstraint: String = "V:[blueView(200.0)]|"
-  let horizontalConstraint: String = "H:[blueView(200.0)]|"
+  let horizontalConstraint: String = "H:|[blueView(200.0)]"
 ```
 
 <br>
@@ -434,9 +435,9 @@ So, what would pinning the blue view to the bottom left corner look like? We rea
 
 Since the <code>|</code> character indicates the edge of a super view in that axis, by placing the <code>|</code> on the direct right of the <code>blueView</code> on the vertical plane, we're pinning it to the bottom of its superview, <code>self.view</code>.
 <br><br>
-On the horizontal plane, adding the <code>|</code> character at the end results in pinning the view to the right edge of its superview.
+On the horizontal plane, keeping the <code>|</code> character at the front results in pinning the view to the left edge of its superview.
 <br><br>
-So taken together, we've pinned the bottom edge and right edge of the view, while preserving its size.
+So taken together, we've pinned the bottom edge and left edge of the view, while preserving its size.
 
 <br><br>
 </details>
@@ -447,10 +448,10 @@ So taken together, we've pinned the bottom edge and right edge of the view, whil
 
 1. Pin each view to a corner of the screen. Give them all a width and height of 100pt
 2. Take three views and line them up horizontally against the top of the screen:
-  - Give them a width of 100 and a height of 50
-  - Take the leftmost view and pin it `8pt` from the `leading` edge
-  - Pin the other two views `8pt` from each other, starting from the leftmost one
-  - Pin them `8pt` from the top
+	- Give them a width of 100 and a height of 50
+	- Take the leftmost view and pin it `8pt` from the `leading` edge
+	- Pin the other two views `8pt` from each other, starting from the leftmost one
+	- Pin them `8pt` from the top
 
 You result should look like:
 
@@ -459,7 +460,7 @@ You result should look like:
 ---
 ### 8. Layout Anchors
 
-The most recent development in the world of autolayout has been the rise of `NSLayoutAnchor`. It's somewhere between `NSLayoutConstraint` and VSL in terms of coding needed and self-documenting. But it has the advantage of being driven by autocomplete, so you will (generally) write code much faster in this method.
+The most recent development in the world of autolayout has been the rise of `NSLayoutAnchor`. It's somewhere between `NSLayoutConstraint` and VSL in terms of coding needed and in self-documenting nature. But it has the advantage of being driven by autocomplete, so you will (generally) write code much faster in this method.
 
 What does it look like to center `blueView` and give it a width and height of 200?
 
@@ -475,26 +476,121 @@ What does it look like to center `blueView` and give it a width and height of 20
   }
 ```
 
+Having first taken a look at `NSLayoutConstraint` and then VFL, the syntax and intent of `NSLayoutAnchor` should be fairly clear. The constraint follows a predictable pattern:
+
+```
+<view>.<attribute>.<constraint type>.isActive = true
+```
+
+> **Developer's Note:** It is also possible to assign the constraint to a variable if you needed to deactive it at some point. You'll find that this is helpful when we talk about modifying constraints when rotating the device.
+
+Extending the example above a little further, what if we wanted to do something like this:
+
+<img src="./Images/three_vertically_aligned.png" width="400" alt="Three vertically aligned views">
+
+We can build off the previous example by keeping the code in place for the `blueView`, but we just need to adjust its width and height to be `100pt` each. What about the other two views?
+
+<br>
+<details><summary>Discussion: What are some inferences we can make about the constraints based on the screenshot provided?</summary>
+<br><br>
+
+We could say:
+
+<ol>
+	<li>All views are the same width and height</li>
+	<li>They could all be aligned by their <code>centerX</code></li>
+	<li>The blue view could be aligned to the super view's center, and the other two views could be aligned to the blue view via either their leading or trailing edges</li>
+	<li>The pink and green view have a small margin between themselves and the blue view</li>
+	<li>It's more likely that the green and pink views are aligned relative to the blue view, rather than the super view</li>
+	<li>The pink view could be aligned to the blue view, and the green view could be aligned to the pink view</li>
+	<li>...plus a good number of other possibilities</li>
+</ol>
+
+<br><br>
+</details>
+<br>
+
+Remember that a core skill of a developer is to be able to look at a problem and deconstruct it into its smaller, codeable components. There are many "right" answers for how to constrain the views in the screenshot, but I'm going to show you one that I think makes the most sense in this scenario.
+
+```swift
+	internal func threeVerticallyAlignedViews() {
+		blueView.isHidden = false
+		pinkView.isHidden = false
+		greenView.isHidden = false
+	    blueView.translatesAutoresizingMaskIntoConstraints = false
+	    pinkView.translatesAutoresizingMaskIntoConstraints = false
+	    greenView.translatesAutoresizingMaskIntoConstraints = false
+
+	    // center X & Y, 100pt sides
+	    blueView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+	    blueView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+	    blueView.widthAnchor.constraint(equalToConstant: 100.0).isActive = true
+	    blueView.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+
+	    // center X, 100pt sides, lined up by trailing/leading. -8pt from blue view
+	    pinkView.bottomAnchor.constraint(equalTo: blueView.topAnchor, constant: -8.0).isActive = true
+	    pinkView.widthAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+	    pinkView.heightAnchor.constraint(equalTo: pinkView.widthAnchor).isActive = true
+	    pinkView.leadingAnchor.constraint(equalTo: blueView.leadingAnchor).isActive = true
+	    pinkView.trailingAnchor.constraint(equalTo: blueView.trailingAnchor).isActive = true
+
+	    //center X, 100pt sides, 8pt from blue view
+	    greenView.topAnchor.constraint(equalTo: blueView.bottomAnchor, constant: 8.0).isActive = true
+	    greenView.centerXAnchor.constraint(equalTo: blueView.centerXAnchor).isActive = true
+	    greenView.widthAnchor.constraint(equalTo: blueView.widthAnchor).isActive = true
+	    greenView.heightAnchor.constraint(equalTo: pinkView.widthAnchor).isActive = true
+	}
+```
+
+Take a moment to let the constraints sink in and think about how you'd write them using the other two methods.
+
+> **Developer's Note**: You may have noticed since the start of this lesson, we've been writing constraint-related code immediately in their own functions. You're going to find that separating out autolayout code into their own separate function(s) will greatly help the organization and readbility of your code.
+
+#### Practice Exercises
+
+1. If you're looking for extra practice, go ahead and attempt to recreate the practice exercises for `NSLayoutContraint` and VFL using `NSLayoutAnchor`.
+2. For this exercise, we're going to slightly modify the last example to make it look like:
+	- <img src="./Images/green_side_label.png" width="400" alt="Green View Stretching Out w/ Label">
+	- `greenView` should have `8pt` margins from the `blueView` and `self.view`
+	- `greenView` should stretch from the trailing edge of the `blueView` (+ the 8pt margin) to the trailing edge of `self.view` (- the 8pt margin)
+	- `greenView` should be the same `height` as `blueView` as well as `top` and `bottom` margins
+	- The label is for the advanced portion, so it can be ignored for this part.
+
+#### Advanced:
+
+1. See if you can also add the label pictured.
+	- It should be instantiated programmatically, meaning it can't be added from Interface Builder
+	- The label's leading edge should be aligned with the green view's leading
+	- The label should have the same centerY as the green view
 
 ---
-### Exercises
+### 8. Exercises
 
-### 1
+> Note: You are welcome to implement each of these examples using either `NSLayoutConstraint`, VFL or `NSLayoutAnchor`. For extra practice, implement each example three times each using a different method. My recommendation is to do them all using `NSLayoutAnchor` at the bare minimum.
+
+#### Problem 1
+
 ![Example 1](./Images/example_1.png)
 
-### 2
+#### Problem 2
+
 ![Example 2](./Images/example_2.png)
 
-### 3
+#### Problem 3
+
 ![Example 3](./Images/example_3.png)
 
-### 4
+#### Problem 4
+
 ![Example 4](./Images/example_4.png)
 
-### 5
+#### Problem 5
+
 ![Example 5](./Images/example_5.png)
 
-### Advanced: Golden Ratio w/ Fib Sequence
+---
+
+#### Advanced: Golden Ratio w/ Fib Sequence
 See [The Designer's guide to the golden ratio](http://www.creativebloq.com/design/designers-guide-golden-ratio-12121546)
 
 The Fibonacci sequence gets pretty close to the Golden Ration (1:1.618...). For this example, I'd like for you to step through the first few numbers in the sequence in order to draw out a `UIView` representation of the sequence for `[1, 1, 2, 3, 5, 8, 13]`
