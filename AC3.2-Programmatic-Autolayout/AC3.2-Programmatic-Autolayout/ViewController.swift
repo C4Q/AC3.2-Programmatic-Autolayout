@@ -31,25 +31,6 @@ class ViewController: UIViewController {
 		greenView.accessibilityIdentifier = "GREEN"
 	}
 	
-	override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-		
-		
-		let _ = self.blueView.constraints.map { $0.isActive = false }
-		let _ = self.redView.constraints.map { $0.isActive = false }
-		self.view.removeConstraints(self.view.constraints)
-		let currentCollection = self.traitCollection
-		
-		if (currentCollection.verticalSizeClass == .compact) && (newCollection.verticalSizeClass == .regular) {
-			exerciseTwo()
-		}
-		else {
-			exerciseFour()
-		}
-		
-		super.willTransition(to: newCollection, with: coordinator)
-	}
-	
-	
 	// MARK: - Exercise Solutions
 	internal func exerciseOne() {
 		redView.isHidden = false

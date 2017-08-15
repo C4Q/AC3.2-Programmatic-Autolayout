@@ -7,7 +7,8 @@ Alternative to defining constraints in Storyboard
 2. [Anatomy of a Constraint](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/AnatomyofaConstraint.html#//apple_ref/doc/uid/TP40010853-CH9-SW1)
 3. [Simple Constraints](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/WorkingwithSimpleConstraints.html#//apple_ref/doc/uid/TP40010853-CH12-SW1)
 4. [Programmatically Creating Constraints](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/ProgrammaticallyCreatingConstraints.html#//apple_ref/doc/uid/TP40010853-CH16-SW1)
-5. [Visual Format Language](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html#//apple_ref/doc/uid/TP40010853-CH27-SW1)
+4. [Visual Format Language - Details](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/ProgrammaticallyCreatingConstraints.html#//apple_ref/doc/uid/TP40010853-CH16-SW9)
+5. [Visual Format Language - Syntax](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html#//apple_ref/doc/uid/TP40010853-CH27-SW1)
 
 #### Optional
 1. [Changing Constraints](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/ModifyingConstraints.html#//apple_ref/doc/uid/TP40010853-CH29-SW1)
@@ -16,8 +17,8 @@ Alternative to defining constraints in Storyboard
 ---
 ### Vocabulary
 
->>> TODO
-
+1. **Autolayout**: the engine that dynamically calculates the size and position of all the views in your view hierarchy, based on constraints placed on those view. [Apple](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/index.html#//apple_ref/doc/uid/TP40010853-CH7-SW1)
+2. **Visual Format Language**: *"lets you use ASCII-art like strings to define your constraints. This provides a visually descriptive representation of the constraints."* [Apple](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/ProgrammaticallyCreatingConstraints.html#//apple_ref/doc/uid/TP40010853-CH16-SW9)
 
 ---
 ### 0. Objectives:
@@ -30,7 +31,6 @@ Alternative to defining constraints in Storyboard
 	2. `Visual Format Language` (VFL)
 	3. `NSLayoutAnchor`
 4. Look at some common constraint and UI errors
-5. Understand the View Debugger
 
 ---
 ### 1. Why Programmatic?
